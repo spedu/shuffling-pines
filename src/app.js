@@ -5,6 +5,6 @@ app.controller('FormController', [function(){
 
 }]);
 
-app.controller('TabController', ['guests', '$scope', function(guests, $scope){
+app.controller('TabController', [function(){
 
 }]);
