@@ -38,6 +38,7 @@ gulp.task('clean', function() {
   del(buildDir + '/**/*');
 });
 
+// TODO separate vendor and source builds...
 gulp.task('buildJS', function() {
   return gulp.src([
             'bower_components/jquery/dist/jquery.js',
