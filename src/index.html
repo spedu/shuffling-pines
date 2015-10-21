@@ -1,92 +1,83 @@
 <!DOCTYPE html>
-<html ng-app="shuffling">
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Shuffling Pines</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="vendor.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="shuffling" ng-cloak>
+  <h1>Shuffling Pines</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#form" aria-controls="form" role="tab" data-toggle="tab">Form</a></li>
+        <li role="presentation"><a href="#guests" aria-controls="guests" role="tab" data-toggle="tab">Guests</a></li>
+      </ul>
 
-  <head>
-    <meta charset="utf-8" />
-    <title>Shuffling Pines</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <!-- Guest Form -->
+        <div role="tabpanel" class="tab-pane active" id="form" ng-controller="GuestFormController as guestFormCtrl">
+          <form class="col-md-6 well">
+            <div class="form-group">
+              <label for="guest-name">Guest Name</label>
+              <input ng-model="guestFormCtrl.name" type="text" class="form-control" id="guest-name" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="transition-date">Transition Date</label>
+              <input ng-model="guestFormCtrl.transitionDate" type="date" class="form-control" id="transition-date" placeholder="">
+            </div>
+            <div class="radio">
+              <label>
+                <input ng-model="guestFormCtrl.status" type="radio" name="pickup-dropoff" id="pickup" value="pickup">
+                Pick-up
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input ng-model="guestFormCtrl.status" ng-click="guestFormCtrl.clearPickupLocation()" type="radio" name="pickup-dropoff" id="dropoff" value="dropoff">
+                Drop-off
+              </label>
+            </div>
+            <div ng-show="guestFormCtrl.isPickup()" class="form-group">
+              <label for="location">Location</label>
+              <textarea ng-model="guestFormCtrl.pickupLocation" class="form-control" id="location"></textarea>
+            </div>
+            <button type="submit" class="btn">Submit</button>
+          </form>
 
-  <body>
-    <h1>Shuffling Pines</h1>
-    <div class="row">
-      <div class="col-md-12">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#form" aria-controls="form" role="tab" data-toggle="tab">Form</a></li>
-          <li role="presentation"><a href="#guests" aria-controls="guests" role="tab" data-toggle="tab">Guests</a></li>
-        </ul>
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <!-- Tab pane 1 -->
-          <div role="tabpanel" class="tab-pane active" id="form">
-            <div>
-
-              <form class="col-md-6 well">
-                <div class="form-group">
-                  <label for="guest-name">Guest Name</label>
-                  <input type="text" class="form-control" id="guest-name" placeholder="">
-                </div>
-                <div class="form-group">
-                  <label for="transition-date">Transition Date</label>
-                  <input type="date" class="form-control" id="transition-date" placeholder="">
-                </div>
-                <div class="radio">
-                  <label>
-                    <input type="radio" name="pickup-dropoff" id="pickup" value="pickup" checked>
-                    Pick-up
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                    <input type="radio" name="pickup-dropoff" id="dropoff" value="dropoff">
-                    Drop-off
-                  </label>
-                </div>
-                <div class="form-group">
-                  <label for="location">Location</label>
-                  <textarea class="form-control" id="location"></textarea>
-                </div>
-                <button type="submit" class="btn">Submit</button>
-              </form>
-
-              <!-- bound display -->
-              <div ng-show="false" class="col-md-6 well">
-                <div ng-show="false" class="form-group">
-                  <label>Name: </label>
-                  John Harvard
-                </div>
-                <div ng-show="false" class="form-group">
-                  <label>Transition Date: </label>
-                  today!
-                </div>
-                <div ng-show="false" class="form-group">
-                  <label>Status: </label>
-                  drop-off
-                </div>
-                <div ng-show="false" class="form-group">
-                  <label>Location: </label>
-                  right here
-                </div>
-              </div>
-
+          <!-- Form Display -->
+          <div class="col-md-6 well">
+            <div class="form-group">
+              <label>Name: </label>
+              {{guestFormCtrl.name}}
+            </div>
+            <div class="form-group">
+              <label>Transition Date: </label>
+              {{guestFormCtrl.transitionDate}}
+            </div>
+            <div class="form-group">
+              <label>Status: </label>
+              {{guestFormCtrl.status}}
+            </div>
+            <div ng-show="guestFormCtrl.isPickup()" class="form-group">
+              <label>Location: </label>
+              {{guestFormCtrl.pickupLocation}}
             </div>
           </div>
+        </div>
 
-          <!-- Tab pane 2 -->
-          <div role="tabpanel" class="tab-pane" id="guests">
-            <ul class="list-unstyled">
-              <li>
-
-              </li>
-            </ul>
-          </div>
-
+        <!-- Guest List -->
+        <div role="tabpanel" class="tab-pane" id="guests">
+          <ul class="list-unstyled">
+            <li></li>
+          </ul>
         </div>
       </div>
     </div>
-    <script src="vendor.js"></script>
-    <script src="app.js"></script>
-  </body>
+  </div>
+</body>
 </html>

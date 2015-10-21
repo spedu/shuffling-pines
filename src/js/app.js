@@ -1,9 +1,19 @@
 var app = angular.module('shuffling', []);
 
-app.controller('FormController', [function(){
+app.controller('GuestFormController', [function() {
+  this.status = 'pickup';
 
+  this.clearPickupLocation = function() {
+    this.pickupLocation = '';
+  };
+
+  this.isPickup = function() {
+    return this.status === 'pickup';
+  };
 }]);
 
-app.controller('TabController', [function(){
+/*
+app.controller('GuestListController', [function() {
 
 }]);
+*/
