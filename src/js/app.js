@@ -1,14 +1,36 @@
 var app = angular.module('shuffling', []);
 
-app.controller('GuestFormController', [function() {
-  this.status = 'pickup';
+var pickupStatus = 'pickup';
+
+app.factory('GuestService', [function() {
+  this.processGuest = function(name, transitionDate, status, pickupLocation) {
+    console.log(name + ', ' +  transitionDate + ', ' +  status + ', ' + pickupLocation);
+  };
+
+  return this;
+}]);
+
+app.controller('GuestFormController', ['GuestService', function(guestService) {
+  this.status = pickupStatus;
+
+  this.processGuest = function() {
+    guestService.processGuest(this.name, this.transitionDate, this.status, this.pickupLocation);
+    this.resetForm();
+  };
+
+  this.resetForm = function() {
+    this.name = '';
+    this.transitionDate = '';
+    this.status = pickupStatus;
+    this.pickupLocation = '';
+  };
 
   this.clearPickupLocation = function() {
     this.pickupLocation = '';
   };
 
   this.isPickup = function() {
-    return this.status === 'pickup';
+    return this.status === pickupStatus;
   };
 }]);
 

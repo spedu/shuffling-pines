@@ -21,7 +21,7 @@
       <div class="tab-content">
         <!-- Guest Form -->
         <div role="tabpanel" class="tab-pane active" id="form" ng-controller="GuestFormController as guestFormCtrl">
-          <form class="col-md-6 well">
+          <form class="col-md-6 well" ng-submit="guestFormCtrl.processGuest()">
             <div class="form-group">
               <label for="guest-name">Guest Name</label>
               <input ng-model="guestFormCtrl.name" type="text" class="form-control" id="guest-name" placeholder="">
