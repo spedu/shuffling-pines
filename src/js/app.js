@@ -1,8 +1,8 @@
 var app = angular.module('shuffling', []);
 
-var pickupStatus = 'pickup';
+app.value('pickupStatus', 'pickup');
 
-app.factory('GuestService', [function() {
+app.service('GuestService', [function() {
   this.processGuest = function(name, transitionDate, status, pickupLocation) {
     console.log(name + ', ' +  transitionDate + ', ' +  status + ', ' + pickupLocation);
   };
@@ -10,7 +10,7 @@ app.factory('GuestService', [function() {
   return this;
 }]);
 
-app.controller('GuestFormController', ['GuestService', function(guestService) {
+app.controller('GuestFormController', ['pickupStatus', 'GuestService', function(pickupStatus, guestService) {
   this.status = pickupStatus;
 
   this.processGuest = function() {
