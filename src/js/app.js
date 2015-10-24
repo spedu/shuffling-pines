@@ -7,6 +7,11 @@ app.service('GuestService', [function() {
 
   svc.guests = angular.fromJson(localStorage.getItem('guests')) || [];
 
+  svc.removeGuest = function(guest) {
+    guest.removed = true;
+    svc.saveGuests();
+  };
+
   svc.processGuest = function(name, transitionDate, status, pickupLocation) {
     var guest = {
       name: name,
@@ -14,12 +19,13 @@ app.service('GuestService', [function() {
       status: status,
       pickupLocation: pickupLocation
     };
-    
     svc.guests.push(guest);
-
-    localStorage.setItem('guests', angular.toJson(svc.guests));
-
+    svc.saveGuests();
     console.log(svc.guests);
+  };
+
+  svc.saveGuests = function() {
+    localStorage.setItem('guests', angular.toJson(svc.guests));
   };
 }]);
 
@@ -49,9 +55,15 @@ app.controller('GuestFormController', ['pickupStatus', 'GuestService', function(
   };
 }]);
 
-app.controller('GuestListController', ['$scope', 'GuestService', function($scope, guestService) {
+app.controller('GuestListController', ['GuestService', function(guestService) {
   var vm = this;
 
   vm.guests = guestService.guests;
+
+  vm.removeGuest = function(guest) {
+    if(confirm('Are you sure you want to remove: ' + guest.name)) {
+      guestService.removeGuest(guest);
+    }
+  };
 }]);
 
