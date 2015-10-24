@@ -6,8 +6,6 @@ app.service('GuestService', [function() {
   this.processGuest = function(name, transitionDate, status, pickupLocation) {
     console.log(name + ', ' +  transitionDate + ', ' +  status + ', ' + pickupLocation);
   };
-
-  return this;
 }]);
 
 app.controller('GuestFormController', ['pickupStatus', 'GuestService', function(pickupStatus, guestService) {
