@@ -3,37 +3,55 @@ var app = angular.module('shuffling', []);
 app.value('pickupStatus', 'pickup');
 
 app.service('GuestService', [function() {
-  this.processGuest = function(name, transitionDate, status, pickupLocation) {
-    console.log(name + ', ' +  transitionDate + ', ' +  status + ', ' + pickupLocation);
+  var svc = this;
+
+  svc.guests = angular.fromJson(localStorage.getItem('guests')) || [];
+
+  svc.processGuest = function(name, transitionDate, status, pickupLocation) {
+    var guest = {
+      name: name,
+      transitionDate: transitionDate,
+      status: status,
+      pickupLocation: pickupLocation
+    };
+    
+    svc.guests.push(guest);
+
+    localStorage.setItem('guests', angular.toJson(svc.guests));
+
+    console.log(svc.guests);
   };
 }]);
 
 app.controller('GuestFormController', ['pickupStatus', 'GuestService', function(pickupStatus, guestService) {
-  this.status = pickupStatus;
+  var vm = this;
 
-  this.processGuest = function() {
-    guestService.processGuest(this.name, this.transitionDate, this.status, this.pickupLocation);
-    this.resetForm();
+  vm.status = pickupStatus;
+
+  vm.processGuest = function() {
+    guestService.processGuest(vm.name, vm.transitionDate, vm.status, vm.pickupLocation);
+    vm.resetForm();
   };
 
-  this.resetForm = function() {
-    this.name = '';
-    this.transitionDate = '';
-    this.status = pickupStatus;
-    this.pickupLocation = '';
+  vm.resetForm = function() {
+    vm.name = '';
+    vm.transitionDate = '';
+    vm.status = pickupStatus;
+    vm.pickupLocation = '';
   };
 
-  this.clearPickupLocation = function() {
-    this.pickupLocation = '';
+  vm.clearPickupLocation = function() {
+    vm.pickupLocation = '';
   };
 
-  this.isPickup = function() {
-    return this.status === pickupStatus;
+  vm.isPickup = function() {
+    return vm.status === pickupStatus;
   };
 }]);
 
-/*
-app.controller('GuestListController', [function() {
+app.controller('GuestListController', ['$scope', 'GuestService', function($scope, guestService) {
+  var vm = this;
 
+  vm.guests = guestService.guests;
 }]);
-*/
+

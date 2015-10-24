@@ -71,10 +71,27 @@
         </div>
 
         <!-- Guest List -->
-        <div role="tabpanel" class="tab-pane" id="guests">
-          <ul class="list-unstyled">
-            <li></li>
-          </ul>
+        <div role="tabpanel" class="tab-pane" id="guests" ng-controller="GuestListController as guestListCtrl">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Transition Date</th>
+                <th>Status</th>
+                <th>Pickup Location</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="(index, guest) in guestListCtrl.guests">
+                <td>{{ guest.name }}</td>
+                <td>{{ guest.transitionDate }}</td>
+                <td>{{ guest.status }}</td>
+                <td>{{ guest.pickupLocation }}</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
