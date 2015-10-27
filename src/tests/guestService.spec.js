@@ -39,7 +39,38 @@ describe('GuestService', function() {
 
   describe('#add', function() {
     it('should add an entry to the guest list', function() {
-      
+      expect(guestService.guests.length).toBe(1);
+      guestService.add('Guest 2', '2015-10-10T04:00:00Z', 'pickup', 'Cambridge, MA');
+      expect(guestService.guests.length).toBe(2);
+      expect(guestService.guests[1]).toEqual({name: 'Guest 2', transitionDate: '2015-10-10T04:00:00Z', status: 'pickup', pickupLocation: 'Cambridge, MA'});
+    });
+
+    it('should persist the guest list to localStorage', function() {
+      spyOn(guestService, 'save');
+      guestService.add('Guest 2', '2015-10-10T04:00:00Z', 'pickup', 'Cambridge, MA');
+      expect(guestService.save).toHaveBeenCalled();
+      expect(guestService.guests.length).toBe(2);
+      expect(localStorage.getItem('guests')).toBe(JSON.stringify(guestService.guests));
+    });
+
+    it('should log the guest list to console', function() {
+      spyOn(console, 'log');
+      guestService.add('Guest 2', '2015-10-10T04:00:00Z', 'pickup', 'Cambridge, MA');
+      expect(guestService.guests.length).toBe(2);
+      expect(console.log).toHaveBeenCalledWith(guestService.guests);
+    });
+
+    describe('when add is given a date object as the transitionDate', function() {
+      it('should JSONify the transitionDate', function() {
+        expect(guestService.guests.length).toBe(1);
+
+        var transitionDate = new Date(2015, 10, 12);
+        var expectedTransitionDate = transitionDate.toJSON();
+
+        guestService.add('Guest 2', transitionDate, 'dropoff', null);
+        expect(guestService.guests.length).toBe(2);
+        expect(guestService.guests[1]).toEqual({name: 'Guest 2', transitionDate: expectedTransitionDate, status: 'dropoff', pickupLocation: null});
+      });
     });
   });
 
