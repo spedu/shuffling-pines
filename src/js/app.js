@@ -35,6 +35,7 @@ app.service('GuestService', ['initialGuests', function(initialGuests) {
       status: status,
       pickupLocation: pickupLocation
     };
+
     svc.guests.push(guest);
 
     svc.save();
