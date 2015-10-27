@@ -46,7 +46,7 @@ describe('GuestService', function() {
     });
 
     it('should persist the guest list to localStorage', function() {
-      spyOn(guestService, 'save');
+      spyOn(guestService, 'save').and.callThrough();;
       guestService.add('Guest 2', '2015-10-10T04:00:00Z', 'pickup', 'Cambridge, MA');
       expect(guestService.save).toHaveBeenCalled();
       expect(guestService.guests.length).toBe(2);
@@ -75,7 +75,19 @@ describe('GuestService', function() {
   });
 
   describe('#remove', function() {
+    it('should mark the guest as removed (soft-delete)', function() {
+      var guest = guestService.guests[0]
 
+      expect(guestService.guests.length).toBe(1);
+
+      guestService.remove(guest);
+
+      console.log(guestService.guests);
+
+      expect(guestService.guests.length).toBe(1);
+      expect(guestService.guests[0].removed).toBeDefined();
+      expect(guestService.guests[0].removed).toBe(true);
+    });
   });
 
 });
