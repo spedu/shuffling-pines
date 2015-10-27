@@ -10,41 +10,41 @@
 <body ng-app="shuffling" ng-cloak>
   <h1>Shuffling Pines</h1>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" ng-controller="GuestController as guestCtrl">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#form" aria-controls="form" role="tab" data-toggle="tab">Form</a></li>
-        <li role="presentation"><a href="#guests" aria-controls="guests" role="tab" data-toggle="tab">Guests</a></li>
+        <li role="presentation" ng-class="{active: guestCtrl.isActiveTab('form')}"><a href="#form" aria-controls="form" role="tab" data-toggle="tab" ng-click="guestCtrl.setActiveTab('form')">Form</a></li>
+        <li role="presentation" ng-class="{active: guestCtrl.isActiveTab('guests')}"><a href="#guests" aria-controls="guests" role="tab" data-toggle="tab" ng-click="guestCtrl.setActiveTab('guests')">Guests</a></li>
       </ul>
 
       <!-- Tab panes -->
       <div class="tab-content">
         <!-- Guest Form -->
-        <div role="tabpanel" class="tab-pane active" id="form" ng-controller="GuestFormController as guestFormCtrl">
-          <form class="col-md-6 well" ng-submit="guestFormCtrl.processGuest()">
+        <div role="tabpanel" class="tab-pane" ng-class="{active: guestCtrl.isActiveTab('form')}" id="form">
+          <form class="col-md-6 well" ng-submit="guestCtrl.processGuest()">
             <div class="form-group">
               <label for="guest-name">Guest Name</label>
-              <input ng-model="guestFormCtrl.name" required type="text" class="form-control" id="guest-name" placeholder="">
+              <input ng-model="guestCtrl.name" required type="text" class="form-control" id="guest-name" placeholder="">
             </div>
             <div class="form-group">
               <label for="transition-date">Transition Date</label>
-              <input ng-model="guestFormCtrl.transitionDate" required type="date" class="form-control" id="transition-date" placeholder="">
+              <input ng-model="guestCtrl.transitionDate" required type="date" class="form-control" id="transition-date" placeholder="">
             </div>
             <div class="radio">
               <label>
-                <input ng-model="guestFormCtrl.status" type="radio" name="pickup-dropoff" id="pickup" value="pickup">
+                <input ng-model="guestCtrl.status" type="radio" name="pickup-dropoff" id="pickup" value="pickup">
                 Pick-up
               </label>
             </div>
             <div class="radio">
               <label>
-                <input ng-model="guestFormCtrl.status" ng-click="guestFormCtrl.clearPickupLocation()" type="radio" name="pickup-dropoff" id="dropoff" value="dropoff">
+                <input ng-model="guestCtrl.status" ng-click="guestCtrl.clearPickupLocation()" type="radio" name="pickup-dropoff" id="dropoff" value="dropoff">
                 Drop-off
               </label>
             </div>
-            <div ng-show="guestFormCtrl.isPickup()" class="form-group">
+            <div ng-show="guestCtrl.isPickup()" class="form-group">
               <label for="location">Location</label>
-              <textarea ng-model="guestFormCtrl.pickupLocation" ng-required="guestFormCtrl.isPickup()" class="form-control" id="location"></textarea>
+              <textarea ng-model="guestCtrl.pickupLocation" ng-required="guestCtrl.isPickup()" class="form-control" id="location"></textarea>
             </div>
             <button type="submit" class="btn">Submit</button>
           </form>
@@ -53,25 +53,25 @@
           <div class="col-md-6 well">
             <div class="form-group">
               <label>Name: </label>
-              {{guestFormCtrl.name}}
+              {{guestCtrl.name}}
             </div>
             <div class="form-group">
               <label>Transition Date: </label>
-              {{guestFormCtrl.transitionDate}}
+              {{guestCtrl.transitionDate}}
             </div>
             <div class="form-group">
               <label>Status: </label>
-              {{guestFormCtrl.status}}
+              {{guestCtrl.status}}
             </div>
-            <div ng-show="guestFormCtrl.isPickup()" class="form-group">
+            <div ng-show="guestCtrl.isPickup()" class="form-group">
               <label>Location: </label>
-              {{guestFormCtrl.pickupLocation}}
+              {{guestCtrl.pickupLocation}}
             </div>
           </div>
         </div>
 
         <!-- Guest List -->
-        <div role="tabpanel" class="tab-pane" id="guests" ng-controller="GuestListController as guestListCtrl">
+        <div role="tabpanel" class="tab-pane" ng-class="{active: guestCtrl.isActiveTab('guests')}" id="guests">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -83,12 +83,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="(index, guest) in guestListCtrl.guests | filter:{removed:'!true'} | orderBy:'transitionDate':true">
+              <tr ng-repeat="(index, guest) in guestCtrl.guests | filter:{removed:'!true'} | orderBy:'transitionDate':true">
                 <td>{{ guest.name }}</td>
                 <td>{{ guest.transitionDate }}</td>
                 <td>{{ guest.status }}</td>
                 <td>{{ guest.pickupLocation }}</td>
-                <td><button ng-click="guestListCtrl.removeGuest(guest)" class="btn btn-danger">Remove</button></td>
+                <td><button ng-click="guestCtrl.removeGuest(guest)" class="btn btn-danger">Remove</button></td>
               </tr>
             </tbody>
           </table>

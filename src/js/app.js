@@ -2,17 +2,33 @@ var app = angular.module('shuffling', []);
 
 app.value('pickupStatus', 'pickup');
 
-app.service('GuestService', [function() {
+app.value('initialGuests', [{
+    name: 'Guest 1',
+    transitionDate: '2015-10-26T04:00:00Z',
+    status: 'pickup',
+    pickupLocation: 'Boston, MA'
+  },{
+    name: 'Guest 2',
+    transitionDate: '2014-07-10T04:00:00Z',
+    status: 'dropoff',
+    pickupLocation: null
+}]);
+
+app.service('GuestService', ['initialGuests', function(initialGuests) {
   var svc = this;
 
-  svc.guests = angular.fromJson(localStorage.getItem('guests')) || [];
+  svc.guests = angular.fromJson(localStorage.getItem('guests')) || initialGuests;
 
-  svc.removeGuest = function(guest) {
+  svc.remove = function(guest) {
     guest.removed = true;
-    svc.saveGuests();
+    svc.save();
   };
 
-  svc.processGuest = function(name, transitionDate, status, pickupLocation) {
+  svc.add = function(name, transitionDate, status, pickupLocation) {
+    if(transitionDate instanceof Date) {
+      transitionDate = transitionDate.toJSON();
+    }
+
     var guest = {
       name: name,
       transitionDate: transitionDate,
@@ -20,23 +36,37 @@ app.service('GuestService', [function() {
       pickupLocation: pickupLocation
     };
     svc.guests.push(guest);
-    svc.saveGuests();
+
+    svc.save();
+
     console.log(svc.guests);
   };
 
-  svc.saveGuests = function() {
+  svc.save = function() {
     localStorage.setItem('guests', angular.toJson(svc.guests));
   };
 }]);
 
-app.controller('GuestFormController', ['pickupStatus', 'GuestService', function(pickupStatus, guestService) {
+app.controller('GuestController', ['pickupStatus', 'GuestService', function(pickupStatus, guestService) {
   var vm = this;
 
+  vm.guests = guestService.guests;
+
+  vm.activeTab = 'form';
   vm.status = pickupStatus;
 
+  vm.setActiveTab = function(tab) {
+    vm.activeTab = tab;
+  };
+
+  vm.isActiveTab = function(tab) {
+    return vm.activeTab === tab;
+  };
+
   vm.processGuest = function() {
-    guestService.processGuest(vm.name, vm.transitionDate, vm.status, vm.pickupLocation);
+    guestService.add(vm.name, vm.transitionDate, vm.status, vm.pickupLocation);
     vm.resetForm();
+    vm.setActiveTab('guests');
   };
 
   vm.resetForm = function() {
@@ -53,16 +83,10 @@ app.controller('GuestFormController', ['pickupStatus', 'GuestService', function(
   vm.isPickup = function() {
     return vm.status === pickupStatus;
   };
-}]);
-
-app.controller('GuestListController', ['GuestService', function(guestService) {
-  var vm = this;
-
-  vm.guests = guestService.guests;
 
   vm.removeGuest = function(guest) {
     if(confirm('Are you sure you want to remove: ' + guest.name)) {
-      guestService.removeGuest(guest);
+      guestService.remove(guest);
     }
   };
 }]);
