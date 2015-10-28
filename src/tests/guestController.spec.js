@@ -11,6 +11,10 @@ describe('GuestController', function() {
       $provide.value('pickupStatus', pickupStatus);
       $provide.service('GuestService', function() {
         this.guests = [];
+        this.statusTransitions = {
+          pickup: 'something',
+          something: 'pickup'
+        };
         this.add = function(name, transitionDate, status, pickupLocation) {
           var guest = {
             name: name,
@@ -22,6 +26,9 @@ describe('GuestController', function() {
         };
         this.remove = function(guest) {
           guest.removed = true;
+        };
+        this.updateStatus = function(guest) {
+          guest.status = guest.statusTransitions[guest.status];
         };
       });
     });
@@ -73,6 +80,17 @@ describe('GuestController', function() {
     });
   });
 
+  describe('getStatusTransition', function() {
+    it('should return what the next status of the guest', function() {
+      var guest = {
+        name: 'John Harvard',
+        status: 'pickup'
+      };
+
+      expect(guestController.getStatusTransition(guest)).toBe('something');
+    });
+  });
+
   describe('clearPickupLocation', function() {
     it('should set the pickup location to an empty string', function() {
       guestController.pickupLocation = 'Boston, MA';
@@ -98,10 +116,20 @@ describe('GuestController', function() {
   });
 
   describe('processGuest', function() {
-
+    // check that guestService.add is called with parameters provided
+    // check that the fields have been reset
+    // check that the active field is now 'guests'
   });
 
   describe('removeGuest', function() {
+    // check to see if confirm was called, with the confirmation text with the guest name, return false
+    // check to see that guestService.remove was not called
 
+    // check to see if confirm was called, with the confirmation text with the guest name, return true
+    // check to see that guestService.remove was called with the model provided
+  });
+
+  describe('updateStatus', function() {
+    // check to see if guestService.updateStatus was called
   });
 });

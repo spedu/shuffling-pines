@@ -90,4 +90,62 @@ describe('GuestService', function() {
     });
   });
 
+  describe('#updateStatus', function() {
+    describe('when the guest status is "pickup"', function() {
+      beforeEach(function() {
+        guestService.add('John Harvard', '2015-10-26T04:00:00.000Z', 'pickup', 'Somewhere USA');
+      });
+
+      it('should transition the status to "arrived"', function() {
+        var guest = guestService.guests.slice(-1)[0];
+        guestService.updateStatus(guest);
+        expect(guest.status).toBe('arrived');
+      });
+
+      it('should call save on the current state of the guest list', function() {
+        spyOn(guestService, 'save').and.callThrough();
+        var guest = guestService.guests.slice(-1)[0];
+        guestService.updateStatus(guest);
+        expect(guestService.save).toHaveBeenCalled();
+      });
+    });
+
+    describe('when the guest status is "dropoff"', function() {
+      beforeEach(function() {
+        guestService.add('John Harvard', '2015-10-26T04:00:00.000Z', 'dropoff', null);
+      });
+
+      it('should transition the status to "arrived"', function() {
+        var guest = guestService.guests.slice(-1)[0];
+        guestService.updateStatus(guest);
+        expect(guest.status).toBe('arrived');
+      });
+
+      it('should call save on the current state of the guest list', function() {
+        spyOn(guestService, 'save').and.callThrough();
+        var guest = guestService.guests.slice(-1)[0];
+        guestService.updateStatus(guest);
+        expect(guestService.save).toHaveBeenCalled();
+      });
+    });
+
+    describe('when the guest status is "arrived"', function() {
+      beforeEach(function() {
+        guestService.add('John Harvard', '2015-10-26T04:00:00.000Z', 'arrived', 'Somewhere USA');
+      });
+
+      it('should transition the status to "pickup"', function() {
+        var guest = guestService.guests.slice(-1)[0];
+        guestService.updateStatus(guest);
+        expect(guest.status).toBe('pickup');
+      });
+
+      it('should call save on the current state of the guest list', function() {
+        spyOn(guestService, 'save').and.callThrough();
+        var guest = guestService.guests.slice(-1)[0];
+        guestService.updateStatus(guest);
+        expect(guestService.save).toHaveBeenCalled();
+      });
+    });
+  });
 });
