@@ -18,9 +18,9 @@ app.service('GuestService', ['initialGuests', function(initialGuests) {
   var svc = this;
 
   svc.statusTransitions = {
-    "pickup": "arrived",
-    "dropoff": "arrived",
-    "arrived": "pickup"
+    pickup: 'arrived',
+    dropoff: 'arrived',
+    arrived: 'pickup'
   };
 
   svc.guests = angular.fromJson(localStorage.getItem('guests')) || initialGuests;
