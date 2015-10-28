@@ -5,6 +5,11 @@
   <title>Shuffling Pines</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="vendor.js"></script>
+  <script src="//cdn.jsdelivr.net/webshim/1.15.10/polyfiller.js"></script>
+  <script>
+    webshims.setOptions('forms-ext', {types: 'date'});
+    webshims.polyfill('forms forms-ext');
+  </script>
   <script src="app.js"></script>
 </head>
 <body ng-app="shuffling" ng-cloak>
