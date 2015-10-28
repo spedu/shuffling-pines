@@ -17,12 +17,13 @@ app.value('initialGuests', [{
 app.service('GuestService', ['initialGuests', function(initialGuests) {
   var svc = this;
 
-  svc.guests = angular.fromJson(localStorage.getItem('guests')) || initialGuests;
-
-  svc.remove = function(guest) {
-    guest.removed = true;
-    svc.save();
+  svc.statusTransitions = {
+    "pickup": "arrived",
+    "dropoff": "arrived",
+    "arrived": "pickup"
   };
+
+  svc.guests = angular.fromJson(localStorage.getItem('guests')) || initialGuests;
 
   svc.add = function(name, transitionDate, status, pickupLocation) {
     if(transitionDate instanceof Date) {
@@ -41,6 +42,16 @@ app.service('GuestService', ['initialGuests', function(initialGuests) {
     svc.save();
 
     console.log(svc.guests);
+  };
+
+  svc.updateStatus = function(guest) {
+    guest.status = svc.statusTransitions[guest.status];
+    svc.save();
+  };
+
+  svc.remove = function(guest) {
+    guest.removed = true;
+    svc.save();
   };
 
   svc.save = function() {
@@ -89,6 +100,14 @@ app.controller('GuestController', ['pickupStatus', 'GuestService', function(pick
     if(confirm('Are you sure you want to remove: ' + guest.name)) {
       guestService.remove(guest);
     }
+  };
+
+  vm.getStatusTransition = function(guest) {
+    return guestService.statusTransitions[guest.status];
+  };
+
+  vm.updateStatus = function(guest) {
+    guestService.updateStatus(guest);
   };
 }]);
 

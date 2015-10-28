@@ -91,7 +91,10 @@
               <tr ng-repeat="(index, guest) in guestCtrl.guests | filter:{removed:'!true'} | orderBy:'transitionDate':true">
                 <td>{{ guest.name }}</td>
                 <td>{{ guest.transitionDate }}</td>
-                <td>{{ guest.status }}</td>
+                <td>
+                  {{ guest.status }}
+                  <button ng-click="guestCtrl.updateStatus(guest)" class="btn btn-info">Update to {{ guestCtrl.getStatusTransition(guest) }}</button>
+                </td>
                 <td>{{ guest.pickupLocation }}</td>
                 <td><button ng-click="guestCtrl.removeGuest(guest)" class="btn btn-danger">Remove</button></td>
               </tr>
