@@ -1,10 +1,34 @@
-`bower install`
-`open src/index.html`
+Shuffling Pines Dissolution Center
+====
 
+Keeps track of guests staying at the facility. 
 
-TODO:
+== Features
 
-* description of application and features
-* install npm install, bower install
-* gulp to run/watch, localhost:8080
-* karma start to run tests independently of gulp
+* Add guest to the list of guests staying at the center
+* Manage the status of guests staying at the center
+** "pickup" -> "arrived"
+** "dropoff" -> "arrived"
+** "arrived" -> "pickup"
+* Remove the guest from the log
+** Performs a soft delete, just does not show up on form
+
+== How to run
+
+Note: all commands are run from the root of the project
+
+=== Install Packages
+
+* `npm install`
+* `bower install`
+
+== Running
+
+* `gulp`
+** builds the project
+** runs the tests
+** watches for javascript, css, and html changes which tests, rebuilds, livereloads as necessary
+
+To run the tests independently:
+
+* `karma start`
