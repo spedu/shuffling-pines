@@ -88,7 +88,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="(index, guest) in guestCtrl.guests | filter:{removed:'!true'} | orderBy:'transitionDate':true">
+              <tr ng-repeat="(index, guest) in guestCtrl.guestService.guests | filter:{removed:'!true'} | orderBy:'transitionDate':true">
                 <td>{{ guest.name }}</td>
                 <td>{{ guest.transitionDate }}</td>
                 <td>

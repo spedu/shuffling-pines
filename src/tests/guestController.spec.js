@@ -2,7 +2,6 @@ describe('GuestController', function() {
   var guestController;
 
   beforeEach(module('shuffling'));
-
   beforeEach(function() {
     module(function($provide) {
       $provide.service('GuestService', function() {
@@ -115,9 +114,51 @@ describe('GuestController', function() {
   });
 
   describe('processGuest', function() {
-    // check that guestService.add is called with parameters provided
-    // check that the fields have been reset
-    // check that the active field is now 'guests'
+    it('should add the guest to the guest list', function() {
+      var name = 'John Harvard',
+          transitionDate = '2015-10-28T04:00:00.000Z',
+          status = 'pickup',
+          pickupLocation = 'Boston, MA';
+
+      guestController.name = name;
+      guestController.transitionDate = transitionDate;
+      guestController.status = status;
+      guestController.pickupLocation = pickupLocation;
+
+      expect(guestController.guestService.guests.length).toBe(0);
+
+      spyOn(guestController.guestService, 'add').and.callThrough();
+
+      guestController.processGuest();
+
+      expect(guestController.guestService.add).toHaveBeenCalledWith(name, transitionDate, status, pickupLocation);
+      expect(guestController.guestService.guests.length).toBe(1);
+    });
+
+    it('should reset the form', function() {
+      guestController.name = 'John Harvard';
+      guestController.transitionDate = '2015-10-28T04:00:00.000Z';
+      guestController.status = 'pickup';
+      guestController.pickupLocation = 'Boston, MA';
+
+      guestController.processGuest();
+
+      expect(guestController.name).toBe('');
+      expect(guestController.transitionDate).toBe('');
+      expect(guestController.status).toBe('pickup');
+      expect(guestController.pickupLocation).toBe('');
+    });
+
+    it('should transition to the guest list tab', function() {
+      guestController.name = 'John Harvard';
+      guestController.transitionDate = '2015-10-28T04:00:00.000Z';
+      guestController.status = 'pickup';
+      guestController.pickupLocation = 'Boston, MA';
+
+      guestController.processGuest();
+
+      expect(guestController.activeTab).toBe('guests');
+    });
   });
 
   describe('removeGuest', function() {

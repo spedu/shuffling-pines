@@ -64,7 +64,7 @@ app.service('GuestService', ['initialGuests', function(initialGuests) {
 app.controller('GuestController', ['GuestService', function(guestService) {
   var vm = this;
 
-  vm.guests = guestService.guests;
+  vm.guestService = guestService;
   guestService.loadGuests();
 
   vm.activeTab = 'form';
