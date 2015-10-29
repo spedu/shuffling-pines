@@ -1,7 +1,5 @@
 var app = angular.module('shuffling', []);
 
-app.value('pickupStatus', 'pickup');
-
 app.value('initialGuests', [{
     name: 'Guest 1',
     transitionDate: '2015-10-26T04:00:00Z',
@@ -23,7 +21,11 @@ app.service('GuestService', ['initialGuests', function(initialGuests) {
     arrived: 'pickup'
   };
 
-  svc.guests = angular.fromJson(localStorage.getItem('guests')) || initialGuests;
+  svc.guests = [];
+
+  svc.loadGuests = function() {
+    svc.guests = angular.fromJson(localStorage.getItem('guests')) || initialGuests;
+  };
 
   svc.add = function(name, transitionDate, status, pickupLocation) {
     if(transitionDate instanceof Date) {
@@ -59,13 +61,14 @@ app.service('GuestService', ['initialGuests', function(initialGuests) {
   };
 }]);
 
-app.controller('GuestController', ['pickupStatus', 'GuestService', function(pickupStatus, guestService) {
+app.controller('GuestController', ['GuestService', function(guestService) {
   var vm = this;
 
   vm.guests = guestService.guests;
+  guestService.loadGuests();
 
   vm.activeTab = 'form';
-  vm.status = pickupStatus;
+  vm.status = 'pickup';
 
   vm.setActiveTab = function(tab) {
     vm.activeTab = tab;
@@ -84,7 +87,7 @@ app.controller('GuestController', ['pickupStatus', 'GuestService', function(pick
   vm.resetForm = function() {
     vm.name = '';
     vm.transitionDate = '';
-    vm.status = pickupStatus;
+    vm.status = 'pickup';
     vm.pickupLocation = '';
   };
 
@@ -93,7 +96,7 @@ app.controller('GuestController', ['pickupStatus', 'GuestService', function(pick
   };
 
   vm.isPickup = function() {
-    return vm.status === pickupStatus;
+    return vm.status === 'pickup';
   };
 
   vm.removeGuest = function(guest) {

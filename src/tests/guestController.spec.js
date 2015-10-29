@@ -1,19 +1,18 @@
 describe('GuestController', function() {
-  var pickupStatus = 'pickup';
-
   var guestController;
 
   beforeEach(module('shuffling'));
 
   beforeEach(function() {
     module(function($provide) {
-      //$provide.value('initialGuests', []);
-      $provide.value('pickupStatus', pickupStatus);
       $provide.service('GuestService', function() {
         this.guests = [];
         this.statusTransitions = {
           pickup: 'something',
           something: 'pickup'
+        };
+        this.loadGuests = function() {
+          // no-op
         };
         this.add = function(name, transitionDate, status, pickupLocation) {
           var guest = {
@@ -40,7 +39,7 @@ describe('GuestController', function() {
 
   describe('initialization', function() {
     it('should set pickupStatus to the value injected in', function() {
-      expect(guestController.status).toBe(pickupStatus); 
+      expect(guestController.status).toBe('pickup'); 
     });
 
     it('should set activeTab to "form"', function() {
@@ -110,7 +109,7 @@ describe('GuestController', function() {
 
       expect(guestController.name).toBe('');
       expect(guestController.transitionDate).toBe('');
-      expect(guestController.status).toBe(pickupStatus);
+      expect(guestController.status).toBe('pickup');
       expect(guestController.pickupLocation).toBe('');
     });
   });
