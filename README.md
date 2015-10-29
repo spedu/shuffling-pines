@@ -36,5 +36,5 @@ To run the tests independently:
 
 ## Notes/Misc
 
-* Tested with Chrome and Firefox
+* Tested using Chrome and Firefox
 * Using webshim polyfiller to get date input type to work on non-Chrome browsers
