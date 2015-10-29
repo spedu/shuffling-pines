@@ -163,11 +163,39 @@ describe('GuestController', function() {
   });
 
   describe('removeGuest', function() {
-    // check to see if confirm was called, with the confirmation text with the guest name, return false
-    // check to see that guestService.remove was not called
+    describe('when confirm is cancelled', function() {
+      it('should not "remove" the guest', function() {
+        var guest = {
+          name: 'John Harvard'
+        };
 
-    // check to see if confirm was called, with the confirmation text with the guest name, return true
-    // check to see that guestService.remove was called with the model provided
+        spyOn(window, 'confirm').and.returnValue(false);
+        spyOn(guestController.guestService, 'remove').and.callThrough();
+
+        guestController.removeGuest(guest);
+
+        expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to remove: ' + guest.name);
+        expect(guestController.guestService.remove).not.toHaveBeenCalled();
+        expect(guest.removed).toBeUndefined();
+      });
+    });
+
+    describe('when confirm is cancelled', function() {
+      it('should not "remove" the guest', function() {
+        var guest = {
+          name: 'John Harvard'
+        };
+
+        spyOn(window, 'confirm').and.returnValue(true);
+        spyOn(guestController.guestService, 'remove').and.callThrough();
+
+        guestController.removeGuest(guest);
+
+        expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to remove: ' + guest.name);
+        expect(guestController.guestService.remove).toHaveBeenCalledWith(guest);
+        expect(guest.removed).toBeTruthy();
+      });
+    });
   });
 
   describe('updateStatus', function() {
