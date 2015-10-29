@@ -7,7 +7,7 @@ describe('GuestService', function() {
 
   beforeEach(function() {
     module(function($provide) {
-      $provide.value('initialGuests', guestList);
+      $provide.value('Guests', guestList);
     });
 
     inject(function($injector) {

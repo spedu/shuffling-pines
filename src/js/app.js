@@ -1,6 +1,6 @@
 var app = angular.module('shuffling', []);
 
-app.value('initialGuests', [{
+app.value('Guests', [{
     name: 'Guest 1',
     transitionDate: '2015-10-26T04:00:00Z',
     status: 'pickup',
@@ -12,7 +12,7 @@ app.value('initialGuests', [{
     pickupLocation: null
 }]);
 
-app.service('GuestService', ['initialGuests', function(initialGuests) {
+app.service('GuestService', ['Guests', function(Guests) {
   var svc = this;
 
   svc.statusTransitions = {
@@ -24,7 +24,7 @@ app.service('GuestService', ['initialGuests', function(initialGuests) {
   svc.guests = [];
 
   svc.loadGuests = function() {
-    svc.guests = angular.fromJson(localStorage.getItem('guests')) || initialGuests;
+    svc.guests = angular.fromJson(localStorage.getItem('guests')) || Guests;
   };
 
   svc.add = function(name, transitionDate, status, pickupLocation) {
