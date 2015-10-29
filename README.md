@@ -3,7 +3,7 @@ Shuffling Pines Dissolution Center
 
 Keeps track of guests staying at the facility. 
 
-== Features
+## Features
 
 * Add guest to the list of guests staying at the center
 ** Performs validation on the form
@@ -14,16 +14,16 @@ Keeps track of guests staying at the facility.
 * Remove the guest from the log
 ** Performs a soft delete, just does not show up on form
 
-== How to run
+## How to run
 
 Note: all commands are run from the root of the project
 
-=== Install Packages
+### Install Packages
 
 * `npm install`
 * `bower install`
 
-== Running
+## Running
 
 * `gulp`
 ** builds the project
@@ -34,7 +34,7 @@ To run the tests independently:
 
 * `karma start`
 
-== Notes/Misc
+## Notes/Misc
 
 * Tested with Chrome and Firefox
 * Using webshim polyfiller to get date input type to work on non-Chrome browsers
