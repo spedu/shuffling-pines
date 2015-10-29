@@ -5,6 +5,7 @@ describe('GuestController', function() {
   beforeEach(function() {
     module(function($provide) {
       $provide.service('GuestService', function() {
+        var svc = this;
         this.guests = [];
         this.statusTransitions = {
           pickup: 'something',
@@ -26,7 +27,7 @@ describe('GuestController', function() {
           guest.removed = true;
         };
         this.updateStatus = function(guest) {
-          guest.status = guest.statusTransitions[guest.status];
+          guest.status = svc.statusTransitions[guest.status];
         };
       });
     });
@@ -170,6 +171,15 @@ describe('GuestController', function() {
   });
 
   describe('updateStatus', function() {
-    // check to see if guestService.updateStatus was called
+    it('should transition the status of the guest', function() {
+      var guest = {name: 'John Harvard', status: 'pickup'};
+   
+      spyOn(guestController.guestService, 'updateStatus').and.callThrough();
+
+      guestController.updateStatus(guest);
+
+      expect(guestController.guestService.updateStatus).toHaveBeenCalledWith(guest);
+      expect(guest.status).toBe('something');
+    });
   });
 });
