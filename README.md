@@ -16,7 +16,7 @@ Keeps track of guests staying at the facility.
 
 ## How to run
 
-Note: all commands are run from the root of the project
+Note: all commands are run from the root of the project unless otherwise stated.
 
 ### Install Packages
 
