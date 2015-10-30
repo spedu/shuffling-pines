@@ -29,6 +29,9 @@ describe('GuestController', function() {
         this.updateStatus = function(guest) {
           guest.status = svc.statusTransitions[guest.status];
         };
+        this.save = function() {
+          // no-op
+        };
       });
     });
 
@@ -208,6 +211,32 @@ describe('GuestController', function() {
 
       expect(guestController.guestService.updateStatus).toHaveBeenCalledWith(guest);
       expect(guest.status).toBe('something');
+    });
+  });
+
+  describe('save', function() {
+    it('should save the current state of the guest list', function() {
+      spyOn(guestController.guestService, 'save').and.callThrough();
+
+      guestController.save();
+
+      expect(guestController.guestService.save).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('isGuestStatusPickup', function() {
+    it('should return true when the status of the guest is "pickup"', function() {
+      var guest = {
+        status: 'pickup'
+      };
+      expect(guestController.isGuestStatusPickup(guest)).toBeTruthy();
+    });
+
+    it('should return false when the status of the guest is something other than "pickup"', function() {
+      var guest = {
+        status: 'dropoff'
+      };
+      expect(guestController.isGuestStatusPickup(guest)).toBeFalsy();
     });
   });
 });

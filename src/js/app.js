@@ -25,13 +25,12 @@ app.service('GuestService', ['Guests', function(Guests) {
 
   svc.loadGuests = function() {
     svc.guests = angular.fromJson(localStorage.getItem('guests')) || Guests;
+    angular.forEach(svc.guests, function(guest) {
+      guest.transitionDate = new Date(Date.parse(guest.transitionDate));
+    });
   };
 
   svc.add = function(name, transitionDate, status, pickupLocation) {
-    if(transitionDate instanceof Date) {
-      transitionDate = transitionDate.toJSON();
-    }
-
     var guest = {
       name: name,
       transitionDate: transitionDate,
@@ -99,6 +98,10 @@ app.controller('GuestController', ['GuestService', function(guestService) {
     return vm.status === 'pickup';
   };
 
+  vm.isGuestStatusPickup = function(guest) {
+    return guest.status === 'pickup';
+  };
+
   vm.removeGuest = function(guest) {
     if(confirm('Are you sure you want to remove: ' + guest.name)) {
       guestService.remove(guest);
@@ -111,6 +114,10 @@ app.controller('GuestController', ['GuestService', function(guestService) {
 
   vm.updateStatus = function(guest) {
     guestService.updateStatus(guest);
+  };
+
+  vm.save = function() {
+    guestService.save();
   };
 }]);
 
