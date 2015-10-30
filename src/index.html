@@ -91,7 +91,7 @@
             <tbody>
               <tr ng-repeat="(index, guest) in guestCtrl.guestService.guests | filter:{removed:'!true'} | orderBy:'transitionDate':true">
                 <td>
-                  {{ guest.name }}<br>
+                  <div>{{ guest.name }}</div>
                   <div class="form-group" ng-class="{ 'has-error': nameField.name.$invalid }">
                     <ng-form name="nameField">
                       <input name="name" ng-model="guest.name" ng-change="guestCtrl.save()" ng-model-options="{ updateOn: 'blur' }" required type="text" class="form-control">
@@ -99,7 +99,7 @@
                   </div>
                 </td>
                 <td>
-                  {{ guest.transitionDate | date : 'MM/dd/yyyy' }}<br>
+                  <div>{{ guest.transitionDate | date : 'MM/dd/yyyy' }}</div>
                   <div class="form-group" ng-class="{ 'has-error': transitionDateField.transitionDate.$invalid }">
                     <ng-form name="transitionDateField">
                       <input name="transitionDate" ng-model="guest.transitionDate" ng-change="guestCtrl.save()" ng-model-options="{ updateOn: 'blur' }" required type="date" class="form-control">
@@ -107,16 +107,16 @@
                   </div>  
                 </td>
                 <td>
-                  {{ guest.status }}<br>
+                  <div>{{ guest.status }}</div>
                   <div class="form-group">
                     <button ng-click="guestCtrl.updateStatus(guest)" class="btn btn-info">Update to {{ guestCtrl.getStatusTransition(guest) }}</button>
                   </div>
                 </td>
                 <td>
-                  {{ guest.pickupLocation }}<br>
+                  <div>{{ guest.pickupLocation }}</div>
                   <div class="form-group" ng-class="{ 'has-error': pickupLocationField.pickupLocation.$invalid }">
                     <ng-form name="pickupLocationField">
-                      <textarea ng-model="guest.pickupLocation" ng-required="guestCtrl.isGuestStatusPickup(guest)" ng-change="guestCtrl.save()" name="pickupLocation" class="form-control"></textarea>
+                      <textarea ng-model="guest.pickupLocation" ng-required="guestCtrl.isGuestStatusPickup(guest)" ng-change="guestCtrl.save()" ng-model-options="{ updateOn: 'blur' }" name="pickupLocation" class="form-control"></textarea>
                     </ng-form>
                   </div>  
                 </td>
