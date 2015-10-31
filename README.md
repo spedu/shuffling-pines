@@ -13,6 +13,7 @@ Keeps track of guests staying at the facility.
   * "arrived" -> "pickup"
 * Remove the guest from the log
   * Performs a soft delete, just does not show up on form
+* Ability to edit guests from the guest list via inline form elements, updates on blur
 
 ## How to run
 
